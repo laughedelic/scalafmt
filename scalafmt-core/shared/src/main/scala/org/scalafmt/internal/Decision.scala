@@ -11,6 +11,14 @@ case class Decision(formatToken: FormatToken, splits: Seq[Split]) {
   def noNewlines: Decision =
     Decision(formatToken, splits.filter(_.modification.isNewline))
 
+  def newlinesToSpaces =
+    Decision(
+      formatToken,
+      splits.map { s =>
+        if (s.modification.isNewline) Split(Space, 0) else s
+      }
+    )
+
   def onlyNewlines(implicit line: sourcecode.Line): Decision = {
     val filtered = splits.filter(_.modification.isNewline)
     if (filtered.nonEmpty) Decision(formatToken, filtered)

@@ -86,9 +86,14 @@ class Router(formatOps: FormatOps) {
         )
       case FormatToken(start @ Interpolation.Start(), _, _) =>
         val isStripMargin = isMarginizedString(start)
-        val end = matchingParentheses(hash(start))
+        val end = matching(start)
         val policy =
-          if (isTripleQuote(start)) NoPolicy
+          if (initStyle.newlines.neverInInterpolations)
+            Policy(
+              { case d => d.newlinesToSpaces },
+              expire = end.end
+            )
+          else if (isTripleQuote(start)) NoPolicy
           else penalizeAllNewlines(end, BreakSingleLineInterpolatedString)
         Seq(
           // statecolumn - 1 because of margin characters |

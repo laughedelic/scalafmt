@@ -1,0 +1,43 @@
+assumeStandardLibraryStripMargin = true
+newlines.neverInInterpolations = true
+maxColumn = 40
+<<< single line string interpolation
+val msg = s"${mkString(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)}"
+>>>
+val msg =
+  s"${mkString(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)}"
+<<< multiline string interpolation
+val msg = s"""
+  ${mkString(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)}
+      """
+>>>
+val msg = s"""
+  ${mkString(aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa)}
+      """
+<<< multiline margin string interpolation
+object foo { val msg =
+s"""
+|${mkString(aaaaaaaaaaaaaaaaaaaaaaaa)}
+        |""".stripMargin
+}
+>>>
+object foo {
+  val msg =
+    s"""
+       |${mkString(aaaaaaaaaaaaaaaaaaaaaaaa)}
+       |""".stripMargin
+}
+<<< adjust spaces in lambda
+val msg =
+  s"""
+     |lorem ipsum
+     |    ${Seq(one, two,   three,  four).map{x =>x.reverse.mkString("\n") }}
+     |ipsum lorem
+     |""".stripMargin
+>>>
+val msg =
+  s"""
+     |lorem ipsum
+     |    ${Seq(one, two, three, four).map { x => x.reverse.mkString("\n") }}
+     |ipsum lorem
+     |""".stripMargin

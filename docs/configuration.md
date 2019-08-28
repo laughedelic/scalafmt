@@ -432,6 +432,39 @@ else {
 }
 ```
 
+### `newlines.neverInInterpolations`
+
+```scala mdoc:defaults
+newlines.neverInInterpolations
+```
+
+```scala mdoc:scalafmt
+newlines.neverInInterpolations = false
+---
+val msg =
+  s"""
+     |List of things:
+     |   ${Seq(one,  two,   three,    four).map{x =>x.reverse}.mkString(", ")}
+     |some more text
+     |""".stripMargin
+```
+
+```scala mdoc:scalafmt
+newlines.neverInInterpolations = true
+---
+val msg =
+  s"""
+     |List of things:
+     |   ${Seq(one,  
+       two,   
+       three,    
+       four).map{x
+         =>x.reverse}.mkString(", ")}
+     |some more text
+     |""".stripMargin
+```
+
+
 ## Rewrite Rules
 
 To enable a rewrite rule, add it to the config like this
